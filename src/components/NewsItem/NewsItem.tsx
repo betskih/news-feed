@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
 import type { NewsItemType } from '@feed/types/apiTypes';
 import constants, { colors, labels } from '@feed/constants';
@@ -6,14 +6,15 @@ import { getRelativeTimestamp } from '@feed/utils/utils';
 
 interface Props {
   item: NewsItemType;
+  onPress?: (url: string) => void;
 }
 
 export default (props: Props) => {
-  const { item } = props;
+  const { item, onPress } = props;
 
   const image = useMemo(() => {
     let img: any = { width: 9999999, url: '' };
-    item.multimedia.forEach((imgItem) => {
+    item?.multimedia?.forEach((imgItem) => {
       if (imgItem.width < img.width) {
         return (img = { width: imgItem.width, url: imgItem.url });
       }
@@ -21,8 +22,16 @@ export default (props: Props) => {
     return { uri: img.url };
   }, [item]);
 
+  const handlePress = useCallback(() => {
+    onPress && onPress(item.url);
+  }, [onPress, item]);
+
+  if (!item.title || !item.url.includes('http')) {
+    return null;
+  }
+
   return (
-    <TouchableOpacity style={style.container}>
+    <TouchableOpacity style={style.container} onPress={handlePress}>
       <Image source={image} resizeMode={'cover'} style={style.image} />
       <View style={style.infoContainer}>
         <Text numberOfLines={4} ellipsizeMode="tail" style={style.title}>
