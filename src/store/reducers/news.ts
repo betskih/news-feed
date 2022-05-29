@@ -1,76 +1,83 @@
 import { NewsItemType } from '@feed/types/apiTypes';
 import { createSlice, createAction } from '@reduxjs/toolkit';
 
-interface Article extends NewsItemType {
-  md5: string;
+interface SectionState {
+  last_updated: string;
+  data: Array<NewsItemType>;
 }
 
 export type NewsState = {
-  arts: Array<Article>;
-  automobiles: Array<Article>;
-  books: Array<Article>;
-  business: Array<Article>;
-  fashion: Array<Article>;
-  food: Array<Article>;
-  health: Array<Article>;
-  home: Array<Article>;
-  insider: Array<Article>;
-  magazine: Array<Article>;
-  movies: Array<Article>;
-  nyregion: Array<Article>;
-  obituaries: Array<Article>;
-  opinion: Array<Article>;
-  politics: Array<Article>;
-  realestate: Array<Article>;
-  science: Array<Article>;
-  sports: Array<Article>;
-  sundayreview: Array<Article>;
-  technology: Array<Article>;
-  theater: Array<Article>;
-  't-magazine': Array<Article>;
-  ravel: Array<Article>;
-  upshot: Array<Article>;
-  us: Array<Article>;
+  arts: SectionState;
+  automobiles: SectionState;
+  books: SectionState;
+  business: SectionState;
+  fashion: SectionState;
+  food: SectionState;
+  health: SectionState;
+  home: SectionState;
+  insider: SectionState;
+  magazine: SectionState;
+  movies: SectionState;
+  nyregion: SectionState;
+  obituaries: SectionState;
+  opinion: SectionState;
+  politics: SectionState;
+  realestate: SectionState;
+  science: SectionState;
+  sports: SectionState;
+  sundayreview: SectionState;
+  technology: SectionState;
+  theater: SectionState;
+  't-magazine': SectionState;
+  ravel: SectionState;
+  upshot: SectionState;
+  us: SectionState;
 };
+const initialSectionState = { last_updated: '', data: [] };
 const initialState = {
-  arts: [],
-  automobiles: [],
-  books: [],
-  business: [],
-  fashion: [],
-  food: [],
-  health: [],
-  home: [],
-  insider: [],
-  magazine: [],
-  movies: [],
-  nyregion: [],
-  obituaries: [],
-  opinion: [],
-  politics: [],
-  realestate: [],
-  science: [],
-  sports: [],
-  sundayreview: [],
-  technology: [],
-  theater: [],
-  't-magazine': [],
-  ravel: [],
-  upshot: [],
-  us: [],
+  arts: initialSectionState,
+  automobiles: initialSectionState,
+  books: initialSectionState,
+  business: initialSectionState,
+  fashion: initialSectionState,
+  food: initialSectionState,
+  health: initialSectionState,
+  home: initialSectionState,
+  insider: initialSectionState,
+  magazine: initialSectionState,
+  movies: initialSectionState,
+  nyregion: initialSectionState,
+  obituaries: initialSectionState,
+  opinion: initialSectionState,
+  politics: initialSectionState,
+  realestate: initialSectionState,
+  science: initialSectionState,
+  sports: initialSectionState,
+  sundayreview: initialSectionState,
+  technology: initialSectionState,
+  theater: initialSectionState,
+  't-magazine': initialSectionState,
+  ravel: initialSectionState,
+  upshot: initialSectionState,
+  us: initialSectionState,
 };
 
-const fetchNews = createAction('news/fetch', (newsSection: string) => ({
+export const fetchNews = createAction('news/fetch', (newsSection: string) => ({
   payload: { newsSection },
 }));
+
+export const fetchNewsError = createAction('news/fetch-error', (error: any) => ({ payload: { error } }));
+export const fetchNewsSuccess = createAction('news/fetch-success', (data: any) => ({ payload: data }));
 
 const newsSlice = createSlice({
   name: 'news',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchNews, (state, action) => {
-      return state;
+    builder.addCase(fetchNewsSuccess, (state, action) => {
+      const { section, last_updated, data } = action.payload;
+      // @ts-ignore
+      return { ...state, [section]: { last_updated, data } };
     });
   },
 });

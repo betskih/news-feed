@@ -61,3 +61,12 @@ export type NewsItemType = {
   multimedia: Array<MultimediaItem>;
   short_url: string;
 };
+
+export type ApiResponse = {
+  status: string;
+  copyright: string;
+  section: string;
+  last_updated: string;
+  num_results: number;
+  results: Array<NewsItemType>;
+};

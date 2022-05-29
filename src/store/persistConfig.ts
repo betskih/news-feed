@@ -3,7 +3,7 @@ import type { PersistConfig } from 'redux-persist';
 import type { AppState } from './types';
 
 const createPersistConfig = (): PersistConfig<AppState> => ({
-  version: 0,
+  version: 1,
   key: 'root',
   storage: AsyncStorage,
   throttle: 60,
