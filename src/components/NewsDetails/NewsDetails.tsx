@@ -58,6 +58,7 @@ export default (props: Props) => {
           javaScriptEnabled={true}
           injectedJavaScript={injectedJavascript}
           onMessage={saveHTML}
+          scalesPageToFit={true}
           //@ts-ignore
           source={cached ? { html } : { uri: url }}
         />

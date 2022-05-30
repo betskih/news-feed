@@ -5,5 +5,6 @@ export default {
   selectedBorder: '#4444ff',
   border: '#888888',
   list: '#61B7CF',
+  dropdown: '#50a0fF',
   white: 'white',
 };

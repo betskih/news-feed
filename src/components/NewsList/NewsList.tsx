@@ -3,6 +3,8 @@ import { FlatList, StyleSheet } from 'react-native';
 import { NewsItemType } from '@feed/types/apiTypes';
 import { NewsItem } from '@feed/components';
 import constants, { colors } from '@feed/constants';
+import { useSelector } from 'react-redux';
+import { isOfflineMode } from '@feed/store/selectors';
 
 interface Props {
   data: Array<NewsItemType>;
@@ -11,6 +13,7 @@ interface Props {
 
 export default (props: Props) => {
   const { data, onPress } = props;
+  useSelector(isOfflineMode);
 
   const renderItem = useCallback(
     ({ item }: { item: NewsItemType }) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaView, StyleSheet } from 'react-native';
 
@@ -7,14 +7,7 @@ import { store } from './store';
 import useRehydrate from '@feed/store/useRehydrate';
 
 const App = () => {
-  const rehydrate = useRehydrate();
-
-  useEffect(() => {
-    if (rehydrate) {
-      // @ts-ignore
-      store.dispatch({ type: 'APP_READY' });
-    }
-  }, [rehydrate]);
+  useRehydrate();
 
   return (
     <Provider store={store}>

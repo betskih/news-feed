@@ -8,9 +8,17 @@ export const setOfflineMode = createAction('options/set-offline', (mode: boolean
   payload: { mode },
 }));
 
-export type OptionsState = { section: string; offline: boolean };
+export const setGeoTag = createAction('options/set-geo-tag', (value: string) => ({
+  payload: value,
+}));
 
-const initialState: OptionsState = { section: 'home', offline: false };
+export const setKeyWord = createAction('options/set-key-word', (value: string) => ({
+  payload: value,
+}));
+
+export type OptionsState = { section: string; offline: boolean; keyWord: string; geoTag: string };
+
+const initialState: OptionsState = { section: 'home', offline: false, keyWord: '', geoTag: '' };
 
 const cacheSlice = createSlice({
   name: 'options',
@@ -25,6 +33,12 @@ const cacheSlice = createSlice({
       .addCase(setOfflineMode, (state, action) => {
         const { mode } = action.payload;
         state.offline = mode;
+      })
+      .addCase(setKeyWord, (state, action) => {
+        state.keyWord = action.payload;
+      })
+      .addCase(setGeoTag, (state, action) => {
+        state.geoTag = action.payload;
       });
   },
 });

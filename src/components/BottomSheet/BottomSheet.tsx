@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, Easing, BackHandler, Text, View, TouchableOpacity } from 'react-native';
+import { Animated, Dimensions, Easing, BackHandler, Text, View, TouchableOpacity, Platform } from 'react-native';
 import style from './style';
 
 const { height: WINDOW_HEIGHT } = Dimensions.get('window');
@@ -74,7 +74,7 @@ export default (props: any) => {
       style={[
         style.contentContainer,
         {
-          height: WINDOW_HEIGHT - 40,
+          height: WINDOW_HEIGHT - (Platform.OS === 'ios' ? 40 : 0),
           transform: [
             {
               translateY: animated,
