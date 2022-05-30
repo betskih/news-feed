@@ -3,6 +3,8 @@ import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
 import type { NewsItemType } from '@feed/types/apiTypes';
 import constants, { colors, labels } from '@feed/constants';
 import { getRelativeTimestamp } from '@feed/utils/utils';
+import { isAbleToView } from '@feed/store/selectors';
+import { useSelector } from 'react-redux';
 
 interface Props {
   item: NewsItemType;
@@ -11,6 +13,7 @@ interface Props {
 
 export default (props: Props) => {
   const { item, onPress } = props;
+  const canView = useSelector(isAbleToView(item.url));
 
   const image = useMemo(() => {
     let img: any = { width: 9999999, url: '' };
@@ -31,8 +34,8 @@ export default (props: Props) => {
   }
 
   return (
-    <TouchableOpacity style={style.container} onPress={handlePress}>
-      <Image source={image} resizeMode={'cover'} style={style.image} />
+    <TouchableOpacity style={[style.container, !canView && style.disabled]} onPress={handlePress} disabled={!canView}>
+      {!!image.uri && <Image source={image} resizeMode={'cover'} style={style.image} />}
       <View style={style.infoContainer}>
         <Text numberOfLines={4} ellipsizeMode="tail" style={style.title}>
           {item.title}
@@ -80,5 +83,9 @@ const style = StyleSheet.create({
     marginTop: constants.gridStep / 2,
     color: colors.header1,
     fontSize: 12,
+  },
+
+  disabled: {
+    opacity: 0.2,
   },
 });

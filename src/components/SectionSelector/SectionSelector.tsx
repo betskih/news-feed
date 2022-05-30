@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, Platform, ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import SelectorItem from './SelectorItem';
@@ -26,9 +26,9 @@ export default () => {
     },
     [onSelect, activeSection],
   );
-  return (
-    <LinearGradient style={style.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#ccccdd', '#eeeeee']}>
-      <Text style={style.sectionText}>{labels.section}</Text>
+
+  const listRender = useCallback(() => {
+    return (
       <FlatList
         contentContainerStyle={style.sections}
         data={sections}
@@ -39,6 +39,19 @@ export default () => {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
       />
+    );
+  }, [keyExtractor, renderItem, sections]);
+
+  return (
+    <LinearGradient style={style.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#ccccdd', '#eeeeee']}>
+      <Text style={style.sectionText}>{labels.section}</Text>
+      {Platform.OS === 'ios' ? (
+        listRender()
+      ) : (
+        <ScrollView horizontal showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+          {listRender()}
+        </ScrollView>
+      )}
     </LinearGradient>
   );
 };

@@ -8,6 +8,8 @@ export const cacheRemove = createAction('cache/remove', (url: string) => ({
   payload: { url },
 }));
 
+export const cacheClear = createAction('cache/clear');
+
 export type CacheState = Array<string>;
 
 const initialState: CacheState = [];

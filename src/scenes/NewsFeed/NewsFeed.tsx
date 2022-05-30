@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import constants, { colors, labels } from '@feed/constants';
-import { NewsList, SectionSelector } from '@feed/components';
-import NewsDetails from '@feed/components/NewsDetails/NewsDetails';
-import BottomSheet from '@feed/components/BottomSheet/BottomSheet';
+import { FilterBlock, NewsList, SectionSelector } from '@feed/components';
+import NewsDetails from '@feed/components/NewsDetails';
+import BottomSheet from '@feed/components/BottomSheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { geCurrentSectionData, getCurrentSection } from '@feed/store/selectors';
 import { fetchNews } from '@feed/store/reducers/news';
+import useCheckNetwork from '@feed/utils/useCheckNetwork';
 
 export default () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default () => {
   const currentSection: string = useSelector(getCurrentSection);
   const data = useSelector(geCurrentSectionData);
   const [currentUrl, setUrl] = useState('');
+  useCheckNetwork();
 
   const getData = useCallback(() => {
     dispatch(fetchNews(currentSection));
@@ -34,6 +36,7 @@ export default () => {
         <Text style={style.headerText}>{labels.title}</Text>
       </View>
       <SectionSelector />
+      <FilterBlock />
       <NewsList data={data} onPress={handlePress} />
       <BottomSheet visible={showDetails} onDismiss={() => setShowDetails(false)}>
         {currentUrl && <NewsDetails url={currentUrl} />}
@@ -63,6 +66,4 @@ const style = StyleSheet.create({
     marginTop: constants.gridStep,
     marginLeft: constants.gridStep,
   },
-
-  sections: {},
 });
