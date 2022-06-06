@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
+import styled from 'styled-components';
 import type { NewsItemType } from '@feed/types/apiTypes';
 import constants, { colors, labels } from '@feed/constants';
 import { getRelativeTimestamp } from '@feed/utils/utils';
@@ -10,7 +11,11 @@ interface Props {
   item: NewsItemType;
   onPress?: (url: string) => void;
 }
-
+const InfoText = styled.Text`
+  margin-top: ${constants.gridStep / 2}px;
+  color: ${colors.header1};
+  font-size: 12px;
+`;
 export default (props: Props) => {
   const { item, onPress } = props;
   const canView = useSelector(isAbleToView(item.url));
@@ -41,10 +46,10 @@ export default (props: Props) => {
           {item.title}
         </Text>
         <View>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={style.info}>
+          <InfoText numberOfLines={1} ellipsizeMode="tail">
             {item.byline}
-          </Text>
-          <Text style={style.info}>{`${labels.published} ${getRelativeTimestamp(item.published_date)}`}</Text>
+          </InfoText>
+          <InfoText>{`${labels.published} ${getRelativeTimestamp(item.published_date)}`}</InfoText>
         </View>
       </View>
     </TouchableOpacity>
@@ -77,12 +82,6 @@ const style = StyleSheet.create({
     width: '65%',
     marginLeft: constants.gridStep,
     justifyContent: 'space-between',
-  },
-
-  info: {
-    marginTop: constants.gridStep / 2,
-    color: colors.header1,
-    fontSize: 12,
   },
 
   disabled: {
